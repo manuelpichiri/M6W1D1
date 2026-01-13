@@ -39,7 +39,7 @@ const findById = async (request, response) => {
   try {
     const { id } = request.params;
     const author = await authorService.getAuthorById(id);
-    console.log(request.params);
+
     response.status(200).send({
       statusCode: 200,
       author,
@@ -52,8 +52,43 @@ const findById = async (request, response) => {
   }
 };
 
+const deleteAuthor = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const author = await authorService.deleteAuthor(id);
+    response.status(200).send({
+      statusCode: 200,
+      author,
+    });
+  } catch (error) {
+    response.status(500).send({
+      statusCode: 500,
+      message: "an error during the request delete by id",
+    });
+  }
+};
+
+const updateAuthor = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const body = request.body;
+    const author = await authorService.updateAuthor(id, body);
+    response.status(200).send({
+      statusCode: 200,
+      author,
+    });
+  } catch (error) {
+    response.status(500).send({
+      statusCode: 500,
+      message: "an error during the request update by id",
+    });
+  }
+};
+
 module.exports = {
   findAll,
   create,
   findById,
+  deleteAuthor,
+  updateAuthor,
 };
