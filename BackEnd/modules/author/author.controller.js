@@ -1,5 +1,8 @@
 const { response } = require("express");
 const authorService = require("./author.service");
+const EmailService = require("../mail/mail.service");
+
+const email = new EmailService();
 
 const findAll = async (request, response) => {
   try {
@@ -22,16 +25,18 @@ const findAll = async (request, response) => {
   }
 };
 
-const create = async (request, response) => {
+const create = async (request, response, next) => {
   try {
     const { body } = request;
     const author = await authorService.createAuthor(body);
+    await email.send(
+      "alexandre.schneider@ethereal.email",
+      "TEST NODEMAILER",
+      "Congratulazioni hai creato un nuovo account",
+    );
     response.status(201).send({ statusCode: 201, author });
   } catch (error) {
-    response.status(500).send({
-      statusCode: 500,
-      message: "an error during the request post",
-    });
+    next(error);
   }
 };
 
@@ -68,6 +73,21 @@ const deleteAuthor = async (request, response) => {
   }
 };
 
+const uploadFileOnCloudByIDAuthor = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const img = req.file.path;
+    const post = await authorService.updateAuthor(id, { avatar: img });
+
+    res.status(200).send({
+      statusCode: 200,
+      post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateAuthor = async (request, response) => {
   try {
     const { id } = request.params;
@@ -91,4 +111,5 @@ module.exports = {
   findById,
   deleteAuthor,
   updateAuthor,
+  uploadFileOnCloudByIDAuthor,
 };

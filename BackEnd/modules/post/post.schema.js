@@ -19,6 +19,7 @@ const postSchema = new mongoose.Schema(
     cover: {
       type: String,
       required: false,
+      default: "",
     },
     readTime: {
       value: {

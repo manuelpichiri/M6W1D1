@@ -1,5 +1,6 @@
 const express = require("express");
 const startServer = require("./config/db");
+const cors = require("cors");
 
 const port = 4545;
 

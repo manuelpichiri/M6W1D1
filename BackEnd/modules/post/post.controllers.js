@@ -1,5 +1,8 @@
 const { response } = require("express");
 const postService = require("./post.service");
+const EmailService = require("../mail/mail.service");
+
+const email = new EmailService();
 
 const findAllPost = async (req, res) => {
   try {
@@ -17,24 +20,45 @@ const findAllPost = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       statusCode: 500,
-      message: "an erro during the request findAllblog",
+      message: "an error during the request findAllblog",
     });
   }
 };
 
-const createPost = async (req, res) => {
+const createPost = async (req, res, next) => {
   try {
     const body = req.body;
     const post = await postService.createPost(body);
+    await post.populate("author"); // mi popola la proprietà author del post, in questo modo posso portare tutti i parametri che mi servono.
+    console.log(post.author);
+    console.log(post.author.email);
+    await email.send(
+      post.author.email,
+      "TEST NODEMAILER",
+      "Congratulazioni hai creato un nuovo post",
+    );
+
     res.status(201).send({
       statusCode: 201,
       post,
     });
   } catch (error) {
-    res.status(500).send({
-      statusCode: 500,
-      message: "an error during the request createBlog",
+    next(error);
+  }
+};
+
+const uploadFileOnCloudByID = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const img = req.file.path;
+    const post = await postService.updatePost(id, { cover: img });
+
+    res.status(200).send({
+      statusCode: 200,
+      post,
     });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -76,7 +100,7 @@ const updatePost = async (req, res) => {
     const { id } = req.params;
     const body = req.body;
     const post = await postService.updatePost(id, body);
-    res.status(500).send({
+    res.status(200).send({
       statusCode: 200,
       post,
     });
@@ -94,4 +118,5 @@ module.exports = {
   updatePost,
   deletePost,
   createPost,
+  uploadFileOnCloudByID,
 };
