@@ -1,12 +1,11 @@
-const { options } = require("./post.routes");
 const postSchema = require("./post.schema");
 
 const getPosts = async () => {
-  const blogs = await postSchema.find().populate("author", "nome email");
+  const posts = await postSchema.find().populate("author", "nome email");
 
   return {
     statusCode: 200,
-    blogs,
+    posts,
   };
 };
 
@@ -40,6 +39,16 @@ const deletePost = async (id) => {
   };
 };
 
+/*const allComments = async (id) => {
+  const post = await postSchema.findById(id);
+  await post.populate("comments");
+
+  return {
+    statusCode: 200,
+    post,
+  };
+};*/
+
 const updatePost = async (id, body) => {
   const post = await postSchema.findByIdAndUpdate(id, body, { new: true });
   return {
@@ -49,6 +58,7 @@ const updatePost = async (id, body) => {
 };
 
 module.exports = {
+  // allComments,
   getPosts,
   getPostById,
   createPost,

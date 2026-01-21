@@ -1,5 +1,5 @@
-const { options } = require("./author.routes");
 const authorSchema = require("./author.schema");
+const bcrypt = require("bcrypt");
 
 const getAuthors = async () => {
   const authors = await authorSchema.find();
@@ -20,12 +20,10 @@ const getAuthorById = async (id) => {
 };
 
 const createAuthor = async (body) => {
+  const saltRounds = 10;
   const newAuthor = new authorSchema({
-    nome: body.nome,
-    cognome: body.cognome,
-    email: body.email,
-    dataDiNascita: body.dataDiNascita,
-    avatar: body.avatar,
+    ...body,
+    password: await bcrypt.hash(body.password, saltRounds),
   });
 
   const savedAuthor = await newAuthor.save();

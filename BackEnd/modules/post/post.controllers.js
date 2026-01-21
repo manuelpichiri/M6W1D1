@@ -6,7 +6,7 @@ const email = new EmailService();
 
 const findAllPost = async (req, res) => {
   try {
-    const posts = await postService.getBlogs();
+    const posts = await postService.getPosts();
     if (posts.length === 0) {
       return res.status(404).send({
         statusCode: 404,
@@ -79,6 +79,23 @@ const findPostById = async (req, res) => {
   }
 };
 
+const findAllCommentByPostId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await postService.allComments(id);
+
+    res.status(200).send({
+      statusCode: 200,
+      post,
+    });
+  } catch (error) {
+    res.status(500).send({
+      statusCode: 500,
+      message: "an error during the request find all comments by post id",
+    });
+  }
+};
+
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -119,4 +136,5 @@ module.exports = {
   deletePost,
   createPost,
   uploadFileOnCloudByID,
+  findAllCommentByPostId,
 };
