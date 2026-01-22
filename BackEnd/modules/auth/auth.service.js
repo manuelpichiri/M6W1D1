@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Author = require("../author/author.schema");
-const invalidPasswordException = require("../../exceptions/auth/InvalidPasswordException");
+const passwordNotFound = require("../../exceptions/auth/passwordException");
 const authorNotFoundException = require("../../exceptions/auth/authorNotFoundException");
 
 const login = async (body) => {
@@ -15,7 +15,7 @@ const login = async (body) => {
   const isPasswordValid = await bcrypt.compare(password, authorData.password); //primo parametro la password che riceviamo dal body. Il secondo parametro è quello dell'autore trovato nel db
 
   if (!isPasswordValid) {
-    throw new invalidPasswordException();
+    throw new passwordNotFound();
   }
   const token = jwt.sign(
     {
