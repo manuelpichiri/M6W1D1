@@ -1,6 +1,7 @@
 const { response } = require("express");
 const authorService = require("./author.service");
 const EmailService = require("../mail/mail.service");
+const authorNotFoundException = require("../../exceptions/auth/authorNotFoundException");
 
 const email = new EmailService();
 
@@ -45,15 +46,16 @@ const findById = async (request, response) => {
     const { id } = request.params;
     const author = await authorService.getAuthorById(id);
 
+    if (!author) {
+      throw new authorNotFoundException("autore non trovato");
+    }
+
     response.status(200).send({
       statusCode: 200,
       author,
     });
   } catch (error) {
-    response.status(500).send({
-      statusCode: 500,
-      message: "an error during the request find by id",
-    });
+    next(error);
   }
 };
 

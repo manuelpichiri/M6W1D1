@@ -11,10 +11,9 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
     "linkify-react": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "primeflex": "^4.0.0",
-    "primereact": "^10.9.7",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",

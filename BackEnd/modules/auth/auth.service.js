@@ -24,7 +24,7 @@ const login = async (body) => {
       email: authorData.email,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "50s" },
+    { expiresIn: "1h" },
   );
 
   return { token };

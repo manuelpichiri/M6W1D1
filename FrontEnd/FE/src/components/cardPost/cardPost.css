@@ -1,0 +1,19 @@
+.card-width {
+  width: 8rem;
+}
+
+.ellipsis-card {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.img-card {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.avatar-card {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}

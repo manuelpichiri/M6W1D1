@@ -1,0 +1,15 @@
+.container-center {
+  position: absolute;
+  top: 50%;
+}
+
+.span-bold {
+  font-weight: bold;
+  font-weight: 700;
+}
+
+.btn-color {
+  background-color: blueviolet;
+  color: white;
+  font-weight: 700;
+}
